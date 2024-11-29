@@ -1,0 +1,52 @@
+.header {
+    padding: 6.4rem 0 5.6rem;
+}
+
+.header__wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2.8rem;
+    align-items: center;
+}
+
+.header__link {
+    font-size: 1.6rem;
+    line-height: 130%;
+    text-align: center;
+    color: #000;
+}
+
+.header__link--black {
+    border-radius: 0.8rem;
+    padding: 1.4rem 3.6rem;
+    border-radius: 0.8rem;
+    background: #000;
+    color: #fff;
+}
+
+.page-title {
+    padding: 0 0 0 5rem;
+    font-weight: 400;
+    font-size: 6.4rem;
+    line-height: 120%;
+    letter-spacing: -0.02em;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.footer__watermark {
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 160%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+}
