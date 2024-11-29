@@ -1,7 +1,10 @@
+import React from "react";
+import ProjectsPage from "./components/ProjectsPage/ProjectsPage";
+
 function App() {
   return (
-    <div className="App">
-      
+    <div className="app">
+      <ProjectsPage></ProjectsPage>
     </div>
   );
 }
