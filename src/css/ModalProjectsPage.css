@@ -1,0 +1,67 @@
+.modal-projects-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-projects-page__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+  
+  .modal-projects-page__content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.2);
+    max-width: 35%;
+    width: 90%;
+    position: relative;
+    z-index: 1001;
+    text-align: center;
+  }
+  
+  .modal-projects-page__title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .modal-projects-page__info {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+  
+  .modal-projects-page__button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .modal-projects-page__button:hover {
+    background-color: #0056b3;
+  }
+  
+  .modal-projects-page__button--close {
+    background-color: #dc3545;
+  }
+  
+  .modal-projects-page__button--close:hover {
+    background-color: #a71d2a;
+  }
+  
