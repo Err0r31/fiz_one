@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import "./Input.css";
 
-function Input({ label, id, name, placeholder }) {
+function Input({ label, id, name, placeholder, type, min, max, onChange }) {
   const inputRefs = useRef([]); 
 
   useEffect(() => {
@@ -39,12 +39,15 @@ function Input({ label, id, name, placeholder }) {
       </label>
       <input
         className="custom-input__field"
-        type="text"
+        type={type === "number" ? "number" : "text"}
         id={id}
         name={name}
         placeholder={placeholder}
         autoComplete="off"
         ref={el => inputRefs.current[0] = el}
+        min={min}
+        max={max}
+        onChange={onChange} 
       />
     </div>
   );

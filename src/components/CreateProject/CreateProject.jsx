@@ -32,6 +32,9 @@ function CreateProject() {
               {plans.map((plan) => (
                 <ProjectPlan key={plan.id} planId={plan.id} />
               ))}
+              <div className="create-form__groups">
+                
+              </div>
           </div>
 
           <div className="create-form__buttons">
