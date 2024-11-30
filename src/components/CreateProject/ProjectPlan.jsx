@@ -93,7 +93,7 @@ function ProjectPlan({ planId }) {
 
   const renderRowInput = (value, index, field) => (
     <input
-      type="number"
+      type={field === "name" ? "text" : "number"}
       className="create-form__input"
       value={value}
       placeholder={`Введите ${field}`}
