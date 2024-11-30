@@ -16,8 +16,8 @@ function App() {
             <Route path="/create-project" element={<Layout PageTitle="Создание проекта"><AnimatedRoute><CreateProject /></AnimatedRoute></Layout>} />
           </Routes>
         </div>
+        </div>
     </Router>
-    </div>
   );
 }
 
