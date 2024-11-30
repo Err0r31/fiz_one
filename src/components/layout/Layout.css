@@ -1,11 +1,29 @@
-.header {
-    padding: 6.4rem 0 5.6rem;
-}
-
 .header__wrapper {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 2.8rem;
+    align-items: center;
+}
+
+.header__logo {
+    margin-top: 1%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header__logo-image {
+    max-width: 45%;
+    height: auto;
+}
+
+.logo-company {
+    max-width: 35%;
+}
+
+.header__nav {
+    display: flex;
+    gap: 5rem;
     align-items: center;
 }
 
@@ -14,6 +32,21 @@
     line-height: 130%;
     text-align: center;
     color: #000;
+}
+
+.header__link--active {
+    text-decoration: underline;
+    text-decoration-color: #6c757d;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    color: #6c757d;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.header__link:hover {
+    text-decoration-color: #5a6268;
+    color: #5a6268;
 }
 
 .header__link--black {
