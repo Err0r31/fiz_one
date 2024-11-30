@@ -12,11 +12,11 @@ function App() {
       <div className="app">
         <div className="container">
           <Routes>
-            <Route path="/" element={<Layout PageTitle="Просмотр проектов"><AnimatedRoute><ProjectsPage /></AnimatedRoute></Layout>}/>
+            <Route path="/" element={<Layout PageTitle="Просмотр проектов"><AnimatedRoute><ProjectsPage /></AnimatedRoute></Layout>} />
             <Route path="/create-project" element={<Layout PageTitle="Создание проекта"><AnimatedRoute><CreateProject /></AnimatedRoute></Layout>} />
           </Routes>
         </div>
-        </div>
+      </div>
     </Router>
   );
 }

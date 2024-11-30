@@ -37,7 +37,7 @@ function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleClickProject = (project) => {
-    setSelectedProject(project); // Устанавливаем выбранный проект
+    setSelectedProject(project);
     setModalProjectsPageOpen(true);
   };
 
