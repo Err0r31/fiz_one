@@ -117,6 +117,85 @@ function ProjectPlan({ planId }) {
     ));
   };
 
+  const generatePlanRequest = ({
+    planName,
+    startDate,
+    plannedEndDate,
+    rowsData,
+    projectId,
+  }) => {
+    // Преобразование данных ресурсов
+    const resources = rowsData.map((row) => ({
+      id: "00000000-0000-0000-0000-000000000000",
+      projectPlanId: "00000000-0000-0000-0000-000000000000",
+      unitName: null, // если понадобится, добавьте поле для названия единицы измерения
+      name: row.name || null,
+      quantity: row.amount || 0,
+      surcharge: row.coefficient || 1,
+      costPricePerUnitMaterial: row.unitCost || 0,
+      costPricePerUnitWork: row.workCost || 0,
+      totalCostPriceMaterial: row.amount * row.unitCost || 0,
+      totalCostPriceWork: row.amount * row.workCost || 0,
+      totalCostPrice:
+        (row.amount * row.unitCost + row.amount * row.workCost) *
+          (row.coefficient || 1) || 0,
+      actualPricePerUnitMaterial: 0, // если данные известны, обновите
+      actualPricePerUnitWork: 0, // если данные известны, обновите
+      totalActualPriceMaterial: 0, // если данные известны, обновите
+      totalActualPriceWork: 0, // если данные известны, обновите
+      totalActualPrice: 0, // если данные известны, обновите
+      laborPerUnit: row.laboriousness || 0,
+    }));
+  
+    // Генерация основного плана
+    const plan = {
+      id: "00000000-0000-0000-0000-000000000000",
+      name: planName || null,
+      startDate: startDate || "0001-01-01",
+      plannedEndDate: plannedEndDate || "0001-01-01",
+      endDate: null,
+      projectPlans: [
+        {
+          id: "00000000-0000-0000-0000-000000000000",
+          projectId: projectId || "00000000-0000-0000-0000-000000000000",
+          name: planName || null,
+          startDate: startDate || "0001-01-01",
+          plannedEndDate: plannedEndDate || "0001-01-01",
+          endDate: null,
+          quantity: rowsData.reduce((sum, row) => sum + (row.amount || 0), 0),
+          totalActualPriceMaterial: 0,
+          totalActualPriceWork: 0,
+          totalActualPrice: 0,
+          totalLabor: rowsData.reduce(
+            (sum, row) => sum + (row.amount * row.laboriousness || 0),
+            0
+          ),
+          totalCostPriceMaterial: rowsData.reduce(
+            (sum, row) => sum + row.amount * row.unitCost || 0,
+            0
+          ),
+          totalCostPriceWork: rowsData.reduce(
+            (sum, row) => sum + row.amount * row.workCost || 0,
+            0
+          ),
+          totalCostPrice:
+            rowsData.reduce(
+              (sum, row) =>
+                sum +
+                (row.amount * (row.unitCost + row.workCost) || 0) *
+                  (row.coefficient || 1),
+              0
+            ) || 0,
+        },
+      ],
+      resorces: resources,
+      groupTasks: [], // Добавьте задачи, если они существуют
+    };
+  
+    return plan;
+  };
+  
+
   return (
     <div className="create-form__plan">
       <div className="create-form__plan-title-wrapper">

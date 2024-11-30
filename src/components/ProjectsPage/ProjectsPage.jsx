@@ -9,7 +9,28 @@ const projects = [
     startDate: "2020-03-04",
     plannedEndDate: "2025-02-02",
     endDate: null,
-    projectPlans: [],
+    projectPlans: [
+      {
+        id: "plan1",
+        name: "Подготовительные работы",
+        startDate: "2020-03-05",
+        plannedEndDate: "2020-08-01",
+        totalCostPriceMaterial: 50000,
+        totalCostPriceWork: 30000,
+        totalCostPrice: 80000,
+        totalLabor: 1200,
+      },
+      {
+        id: "plan2",
+        name: "Закладка фундамента",
+        startDate: "2020-08-02",
+        plannedEndDate: "2021-01-15",
+        totalCostPriceMaterial: 200000,
+        totalCostPriceWork: 100000,
+        totalCostPrice: 300000,
+        totalLabor: 2500,
+      },
+    ],
     progress: 75,
   },
   {
@@ -18,7 +39,18 @@ const projects = [
     startDate: "2021-05-10",
     plannedEndDate: "2022-10-01",
     endDate: "2022-09-15",
-    projectPlans: [],
+    projectPlans: [
+      {
+        id: "plan1",
+        name: "Дизайн интерьера",
+        startDate: "2021-05-11",
+        plannedEndDate: "2021-06-30",
+        totalCostPriceMaterial: 10000,
+        totalCostPriceWork: 5000,
+        totalCostPrice: 15000,
+        totalLabor: 300,
+      },
+    ],
     progress: 100,
   },
   {
@@ -27,10 +59,22 @@ const projects = [
     startDate: "2022-05-10",
     plannedEndDate: "2023-10-01",
     endDate: null,
-    projectPlans: [],
+    projectPlans: [
+      {
+        id: "plan1",
+        name: "Строительство бани",
+        startDate: "2022-06-01",
+        plannedEndDate: "2022-09-30",
+        totalCostPriceMaterial: 150000,
+        totalCostPriceWork: 50000,
+        totalCostPrice: 200000,
+        totalLabor: 1800,
+      },
+    ],
     progress: 40,
   },
 ];
+;
 
 function ProjectsPage() {
   const [modalProjectsPageOpen, setModalProjectsPageOpen] = useState(false);
