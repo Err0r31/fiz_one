@@ -9,7 +9,7 @@ function Layout({ PageTitle, children }) {
             <div className="container">
                 <div className="header__wrapper">
                     <Link to='/' className="header__link">Просмотр<br /> проектов</Link>
-                    <Link to='/' className="header__link">Создание проекта</Link>
+                    <Link to='create-project/' className="header__link">Создание проекта</Link>
                     <Link to='/' className="header__link header__link--black">Выход</Link>
                 </div>
             </div>
