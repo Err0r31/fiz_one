@@ -65,3 +65,8 @@ ul {
 input {
   font-family: "Inter", "Arial", sans-serif;
 }
+
+a,
+button {
+  transition: all 0.3s ease;
+}
