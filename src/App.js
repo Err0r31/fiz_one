@@ -8,16 +8,12 @@ import "./css/style.css";
 
 function App() {
   return (
-    <div className="container">
     <Router>
       <div className="app">
-        <Routes>
-          <Route path="create-project/" element={
-            <Layout PageTitle="Просмотр проектов">
-              <CreateProject />
-            </Layout>
-          } />
-            <Route path="/" element={<AnimatedRoute><ProjectsPage /></AnimatedRoute>}/>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Layout PageTitle="Просмотр проектов"><AnimatedRoute><ProjectsPage /></AnimatedRoute></Layout>}/>
+            <Route path="/create-project" element={<Layout PageTitle="Создание проекта"><AnimatedRoute><CreateProject /></AnimatedRoute></Layout>} />
           </Routes>
         </div>
     </Router>

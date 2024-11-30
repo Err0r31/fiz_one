@@ -17,6 +17,7 @@
     text-align: left;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
+    position: relative;
 }
 
 .project__block:hover {
@@ -37,4 +38,38 @@
     color: #555;
     margin: 5px 0;
     line-height: 1.5;
+}
+
+.progress-bar {
+    width: 96%;
+    height: 1rem;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 6%;
+    left: 2%;
+    
+}
+  
+.progress-bar__fill {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+}
+
+.progress-bar__label {
+    font-size: 14px;
+    text-align: right;
+    margin-top: 5px;
+    position: absolute;
+    bottom: 12%;
+}
+
+.pbl-right {
+    right: 3%;
+}
+
+.pbl-left {
+    left: 3%;
 }

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import '../../css/ProjectsPage.css';
-import ModalProjectsPage from './ModalProjectsPage';
+import React, { useState } from "react";
+import "../../css/ProjectsPage.css";
+import ModalProjectsPage from "./ModalProjectsPage";
 
 const projects = [
   {
@@ -10,6 +10,7 @@ const projects = [
     plannedEndDate: "2025-02-02",
     endDate: null,
     projectPlans: [],
+    progress: 75,
   },
   {
     id: "d81c6da0-994b-4527-8800-f39632b148c1",
@@ -18,6 +19,7 @@ const projects = [
     plannedEndDate: "2022-10-01",
     endDate: "2022-09-15",
     projectPlans: [],
+    progress: 100,
   },
   {
     id: "d81c6da0-994b-4527-8800-f39632b148c2",
@@ -26,6 +28,7 @@ const projects = [
     plannedEndDate: "2023-10-01",
     endDate: null,
     projectPlans: [],
+    progress: 40,
   },
 ];
 
@@ -61,6 +64,14 @@ function ProjectsPage() {
           <p className="project__block-date">
             Фактический конец: {project.endDate ? project.endDate : "Ещё не завершён"}
           </p>
+          <div className="progress-bar">
+            <div
+              className="progress-bar__fill"
+              style={{ width: `${project.progress}%` }}
+            ></div>
+          </div>
+          <p className="progress-bar__label pbl-left">0</p>
+          <p className="progress-bar__label pbl-right">100%</p>
         </div>
       ))}
       {modalProjectsPageOpen && selectedProject && (
