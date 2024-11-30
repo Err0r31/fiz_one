@@ -14,8 +14,8 @@ function Layout({ PageTitle, children }) {
                         <img className="header__logo-image logo-team" src={logoTeam} alt="Логотип команды Лидеры"></img>
                     </div>
                     <div className="header__nav">
-                        <Link to='/' className="header__link header__link--active">Просмотр проектов</Link>
-                        <Link to='/' className="header__link">Создание проекта</Link>
+                        <Link to='/' className="header__link">Просмотр<br /> проектов</Link>
+                        <Link to='create-project/' className="header__link">Создание проекта</Link>
                         <Link to='/' className="header__link header__link--black">Выход</Link>
                     </div>
                 </div>

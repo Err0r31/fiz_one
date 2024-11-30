@@ -1,0 +1,29 @@
+.custom-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-input__label {
+    position: absolute;
+    top: 50%;
+    left: 1.5rem;
+    font-weight: 600;
+    font-size: 2rem;
+    line-height: 130%;
+    transform: translateY(-50%);
+}
+
+.custom-input__field {
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 0.9rem 5.5rem 0.9rem 0;
+    background: #fff;
+    font-size: 2rem;
+}
+
+.custom-input__field:hover,
+.custom-input__field:focus {
+    outline: none;
+}
