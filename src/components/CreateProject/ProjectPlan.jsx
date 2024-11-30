@@ -1,82 +1,120 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "./ProjectPlan.css";
 import Input from "../shared/Input/Input";
 
+const calculateCost = (
+  rowsData,
+  amountField,
+  coefficientField,
+  unitCostField,
+  laboriousnessField,
+  workCostField
+) => {
+  return rowsData.reduce(
+    (total, row) => {
+      const amount = row[amountField];
+      const unitCost = row[unitCostField];
+      const coefficient = row[coefficientField] || 1;
+      const workCost = row[workCostField];
+
+      const materialCost = amount * unitCost;
+      const materialCostWithCoefficient = materialCost * coefficient;
+
+      const workCostWithoutCoefficient = amount * workCost;
+      const workCostWithCoefficient = workCostWithoutCoefficient * coefficient;
+
+      const laboriousness = amount * row[laboriousnessField];
+
+      return {
+        materialCostWithoutCoefficient:
+          total.materialCostWithoutCoefficient + materialCost,
+        materialCostWithCoefficient:
+          total.materialCostWithCoefficient + materialCostWithCoefficient,
+        workCostWithoutCoefficient:
+          total.workCostWithoutCoefficient + workCostWithoutCoefficient,
+        workCostWithCoefficient:
+          total.workCostWithCoefficient + workCostWithCoefficient,
+        totalLaboriousness: total.totalLaboriousness + laboriousness,
+      };
+    },
+    {
+      materialCostWithoutCoefficient: 0,
+      materialCostWithCoefficient: 0,
+      workCostWithoutCoefficient: 0,
+      workCostWithCoefficient: 0,
+      totalLaboriousness: 0,
+    }
+  );
+};
+
 function ProjectPlan({ planId }) {
-  const [rowCount, setRowCount] = useState(1); // Начальное количество строк - 1
+  const [rowsData, setRowsData] = useState([
+    { amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0 },
+  ]);
 
   const addRow = () => {
-    setRowCount(rowCount + 1); // Добавляем строку
+    setRowsData([
+      ...rowsData,
+      { amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0 },
+    ]);
   };
 
+  const handleInputChange = (index, field, value) => {
+    setRowsData((prevRowsData) => {
+      const updatedRowsData = [...prevRowsData];
+      updatedRowsData[index][field] = parseFloat(value) || 0;
+      return updatedRowsData;
+    });
+  };
+
+  const {
+    materialCostWithoutCoefficient,
+    materialCostWithCoefficient,
+    workCostWithoutCoefficient,
+    workCostWithCoefficient,
+    totalLaboriousness,
+  } = useMemo(
+    () =>
+      calculateCost(
+        rowsData,
+        "amount",
+        "coefficient",
+        "unitCost",
+        "laboriousness",
+        "workCost"
+      ),
+    [rowsData]
+  );
+
+  const totalCostWithoutCoefficient =
+    materialCostWithoutCoefficient + workCostWithoutCoefficient;
+  const totalCostWithCoefficient =
+    materialCostWithCoefficient + workCostWithCoefficient;
+
+  const renderRowInput = (value, index, field) => (
+    <input
+      type="number"
+      className="create-form__input"
+      value={value}
+      placeholder={`Введите ${field}`}
+      onChange={(e) => handleInputChange(index, field, e.target.value)}
+    />
+  );
+
   const renderRows = () => {
-    const rows = [];
-    for (let i = 2; i <= rowCount; i++) {
-      // Начинаем с 2, так как первая строка уже есть
-      rows.push(
-        <tr key={i}>
-          <td>
-            <span id={`planMaterialId${planId}${i}`}>{i}</span>
-          </td>
-          <td>
-            <input
-              type="text"
-              className="create-form__input"
-              id={`planItemName${planId}${i}`}
-              name={`planItemName${planId}${i}`}
-              placeholder="Введите наименование"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              className="create-form__input"
-              id={`planMaterialAmount${planId}${i}`}
-              name={`planMaterialAmount${planId}${i}`}
-              placeholder="Введите количество"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              className="create-form__input"
-              id={`planMaterialAmountCost${planId}${i}`}
-              name={`planMaterialAmountCost${planId}${i}`}
-              placeholder="Цена за единицу"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              className="create-form__input"
-              id={`planMaterialCoefficient${planId}${i}`}
-              name={`planMaterialCoefficient${planId}${i}`}
-              placeholder="Введите коэффициент"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              className="create-form__input"
-              id={`planWorkCost${planId}${i}`}
-              name={`planWorkCost${planId}${i}`}
-              placeholder="Цена за единицу работы"
-            />
-          </td>
-          <td>
-            {/* Новый столбец для трудоемкости единичной */}
-            <input
-              type="number"
-              className="create-form__input"
-              id={`planLaboriousness${planId}${i}`}
-              name={`planLaboriousness${planId}${i}`}
-              placeholder="Трудоемкость"
-            />
-          </td>
-        </tr>
-      );
-    }
-    return rows;
+    return rowsData.map((row, index) => (
+      <tr key={index}>
+        <td>
+          <span>{index + 1}</span>
+        </td>
+        <td>{renderRowInput(row.name, index, "name")}</td>
+        <td>{renderRowInput(row.amount, index, "amount")}</td>
+        <td>{renderRowInput(row.unitCost, index, "unitCost")}</td>
+        <td>{renderRowInput(row.coefficient, index, "coefficient")}</td>
+        <td>{renderRowInput(row.workCost, index, "workCost")}</td>
+        <td>{renderRowInput(row.laboriousness, index, "laboriousness")}</td>
+      </tr>
+    ));
   };
 
   return (
@@ -116,105 +154,47 @@ function ProjectPlan({ planId }) {
             <th>Трудоемкость единичная</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>
-              <span id={`planMaterialNumber${planId}1`}>1</span>
-            </td>
-            <td>
-              <input
-                type="text"
-                className="create-form__input"
-                id={`planMaterialName${planId}1`}
-                name={`planMaterialName${planId}1`}
-                placeholder="Введите наименование"
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                className="create-form__input"
-                id={`planMaterialAmount${planId}1`}
-                name={`planMaterialAmount${planId}1`}
-                placeholder="Введите количество"
-              />
-            </td>
-            <td>
-              <input
-                type="number"
-                className="create-form__input"
-                id={`planMaterialAmountCost${planId}1`}
-                name={`planMaterialAmountCost${planId}1`}
-                placeholder="Цена за единицу"
-              />
-            </td>
-            <td>
-              <input
-                className="create-form__input"
-                type="text"
-                id={`planMaterialCoefficient${planId}1`}
-                name={`planMaterialCoefficient${planId}1`}
-                placeholder="Введите коэффициент"
-              />
-            </td>
-            <td>
-              <input
-                className="create-form__input"
-                type="number"
-                id={`planWorkCost${planId}1`}
-                name={`planWorkCost${planId}1`}
-                placeholder="Цена за единицу"
-              />
-            </td>
-            <td>
-              <input
-                className="create-form__input"
-                type="number"
-                id={`planLaboriousness${planId}1`}
-                name={`planLaboriousness${planId}1`}
-                placeholder="Трудоемкость"
-              />
-            </td>
-          </tr>
-          {renderRows()}
-        </tbody>
+        <tbody>{renderRows()}</tbody>
       </table>
       <div className="create-form__result-wrapper">
         <div className="create-form__price">
-          <h4 className="create-form__subtitle">Итоги по себестоимости</h4>
+          <h4 className="create-form__subtitle">
+            Итоги по себестоимости (без коэффициента)
+          </h4>
           <div className="create-form__results">
             <p className="create-form__result">
-              Итоговая цена по материалам:
-              <span id={`MaterialResultCostPrice${planId}`}></span>
+              Итоговая цена по материалам:{" "}
+              <span>{materialCostWithoutCoefficient}</span>
             </p>
             <p className="create-form__result">
-              Итоговая цена по работе:
-              <span id={`WorkResultCostPrice${planId}`}></span>
+              Итоговая цена по работе: <span>{workCostWithoutCoefficient}</span>
             </p>
             <p className="create-form__result">
-              Итоговая цена:
-              <span id={`ResultCostPrice${planId}`}></span>
+              Итоговая цена: <span>{totalCostWithoutCoefficient}</span>
             </p>
           </div>
         </div>
         <div className="create-form__price">
           <h4 className="create-form__subtitle">
-            Итоги по финальной стоимости
+            Итоги по себестоимости (с коэффициентом)
           </h4>
           <div className="create-form__results">
             <p className="create-form__result">
-              Итоговая цена по материалам:
-              <span id={`MaterialResultPrice${planId}`}></span>
+              Итоговая цена по материалам:{" "}
+              <span>{materialCostWithCoefficient}</span>
             </p>
             <p className="create-form__result">
-              Итоговая цена по работе:
-              <span id={`WorkResultPrice${planId}`}></span>
+              Итоговая цена по работе: <span>{workCostWithCoefficient}</span>
             </p>
             <p className="create-form__result">
-              Итоговая цена:
-              <span id={`ResultPrice${planId}`}></span>
+              Итоговая цена: <span>{totalCostWithCoefficient}</span>
             </p>
           </div>
+        </div>
+        <div className="create-form__price">
+          <p className="create-form__result">
+            Суммарная трудоемкость: <span>{totalLaboriousness}</span>
+          </p>
         </div>
       </div>
     </div>
