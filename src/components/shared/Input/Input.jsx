@@ -39,7 +39,7 @@ function Input({ label, id, name, placeholder, type, min, max, onChange }) {
       </label>
       <input
         className="custom-input__field"
-        type={type === "number" ? "number" : "text"}
+        type={type || "text"}
         id={id}
         name={name}
         placeholder={placeholder}

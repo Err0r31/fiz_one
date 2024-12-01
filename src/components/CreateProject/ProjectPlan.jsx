@@ -1,10 +1,17 @@
 import React, { useState, useMemo } from "react";
 import Table from "./Table";
 import ResultSection from "./ResultSection";
-import Input from "../shared/Input/Input"; 
+import Input from "../shared/Input/Input";
 import "./ProjectPlan.css";
 
-const calculateCost = (rowsData, amountField, coefficientField, unitCostField, laboriousnessField, workCostField) => {
+const calculateCost = (
+  rowsData,
+  amountField,
+  coefficientField,
+  unitCostField,
+  laboriousnessField,
+  workCostField
+) => {
   return rowsData.reduce(
     (total, row) => {
       const amount = row[amountField];
@@ -21,10 +28,14 @@ const calculateCost = (rowsData, amountField, coefficientField, unitCostField, l
       const laboriousness = amount * row[laboriousnessField];
 
       return {
-        materialCostWithoutCoefficient: total.materialCostWithoutCoefficient + materialCost,
-        materialCostWithCoefficient: total.materialCostWithCoefficient + materialCostWithCoefficient,
-        workCostWithoutCoefficient: total.workCostWithoutCoefficient + workCostWithoutCoefficient,
-        workCostWithCoefficient: total.workCostWithCoefficient + workCostWithCoefficient,
+        materialCostWithoutCoefficient:
+          total.materialCostWithoutCoefficient + materialCost,
+        materialCostWithCoefficient:
+          total.materialCostWithCoefficient + materialCostWithCoefficient,
+        workCostWithoutCoefficient:
+          total.workCostWithoutCoefficient + workCostWithoutCoefficient,
+        workCostWithCoefficient:
+          total.workCostWithCoefficient + workCostWithCoefficient,
         totalLaboriousness: total.totalLaboriousness + laboriousness,
       };
     },
@@ -38,21 +49,37 @@ const calculateCost = (rowsData, amountField, coefficientField, unitCostField, l
   );
 };
 
-function ProjectPlan({ planId }) {
+function ProjectPlan({ plan = {}, onPlanChange }) {
   const [rowsData, setRowsData] = useState([
-    { name: "", amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0 },
+    {
+      name: "",
+      amount: 0,
+      unitCost: 0,
+      coefficient: 1,
+      workCost: 0,
+      laboriousness: 0,
+    },
   ]);
-  const [planName, setPlanName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [amount, setAmount] = useState(0);
 
   const addRow = () => {
     setRowsData([
       ...rowsData,
-      { name: "", amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0 },
+      {
+        name: "",
+        amount: 0,
+        unitCost: 0,
+        coefficient: 1,
+        workCost: 0,
+        laboriousness: 0,
+      },
     ]);
   };
+
+  const handelInputPlanChange = ( field, value) => { 
+    if (plan) { 
+      onPlanChange(plan.id, field, value);
+    }
+  }
 
   const handleInputChange = (index, field, value) => {
     setRowsData((prevRowsData) => {
@@ -66,45 +93,63 @@ function ProjectPlan({ planId }) {
     });
   };
 
-  const { materialCostWithoutCoefficient, materialCostWithCoefficient, workCostWithoutCoefficient, workCostWithCoefficient, totalLaboriousness } = useMemo(
-    () => calculateCost(rowsData, "amount", "coefficient", "unitCost", "laboriousness", "workCost"),
+  const {
+    materialCostWithoutCoefficient,
+    materialCostWithCoefficient,
+    workCostWithoutCoefficient,
+    workCostWithCoefficient,
+    totalLaboriousness,
+  } = useMemo(
+    () =>
+      calculateCost(
+        rowsData,
+        "amount",
+        "coefficient",
+        "unitCost",
+        "laboriousness",
+        "workCost"
+      ),
     [rowsData]
   );
 
-  const totalCostWithoutCoefficient = materialCostWithoutCoefficient + workCostWithoutCoefficient;
-  const totalCostWithCoefficient = materialCostWithCoefficient + workCostWithCoefficient;
+  const totalCostWithoutCoefficient =
+    materialCostWithoutCoefficient + workCostWithoutCoefficient;
+  const totalCostWithCoefficient =
+    materialCostWithCoefficient + workCostWithCoefficient;
 
   return (
     <div className="create-form__plan">
       <div className="create-form__plan-title-wrapper">
-        <h3 className="create-form__plan-title">План {planId}</h3>
+        <h3 className="create-form__plan-title">План {plan.id}</h3>
       </div>
 
       <div className="create-form__inputs">
         <Input
           label="Название плана"
-          id={`plan-name-${planId}`}
-          value={planName}
-          onChange={(e) => setPlanName(e.target.value)}
+          id={`plan-name-${plan.id}`}
+          value={plan.planName || ""}
+          onChange={(e) => handelInputPlanChange("planName", e.target.value)}
         />
         <Input
           label="Дата начала плана"
-          id={`start-date-${planId}`}
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
+          id={`start-date-${plan.id}`}
+          value={plan.startDate || ""}
+          onChange={(e) => handelInputPlanChange("startDate", e.target.value)}
+          type="date"
         />
         <Input
           label="Плановая дата окончания плана"
-          id={`end-date-${planId}`}
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
+          id={`end-date-${plan.id}`}
+          value={plan.plannedEndDate || ""}
+          onChange={(e) => handelInputPlanChange("plannedEndDate", e.target.value)}
+          type="date"
         />
         <Input
           label="Количество"
-          id={`amount-${planId}`}
+          id={`amount-${plan.id}`}
           type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          value={plan.amount || ""}
+          onChange={(e) => handelInputPlanChange("amount", e.target.value)}
         />
       </div>
 
