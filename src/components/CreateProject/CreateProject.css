@@ -56,3 +56,10 @@
     font-size: 1.6rem;
     line-height: 130%;
 }
+
+.create-form__button:hover,
+.create-form__button:focus {
+    border: 1px solid #fff;
+    background: #000;
+    color: #fff;
+}

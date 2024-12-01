@@ -1,7 +1,13 @@
 .create-form__plan {
     display: flex;
     flex-direction: column;
-    gap: 1.3rem;
+    gap: 1.8rem;
+}
+
+.create-form__main-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .create-form__plan-title-wrapper {
@@ -18,37 +24,73 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 1.5rem;
+    border: 1px solid #e6e6e6;
+}
+
+.create-form__table th,
+.create-form__table td {
+    border: 1px solid #e6e6e6;
+    font-size: 1.6rem;
+    text-align: center;
 }
 
 .create-form__table th {
-    font-size: 1.8rem;
     font-weight: 600;
-    text-align: left;
+    background-color: #fff;
     padding: 1.2rem;
-    background-color: #f9f9f9;
-    border-bottom: 2px solid #e6e6e6;
-}
-
-.create-form__table td {
-    font-size: 1.6rem;
-    padding: 1.2rem;
-    border-bottom: 1px solid #e6e6e6;
 }
 
 .create-form__input {
     width: 100%;
+    height: 100%;
     padding: 0.8rem;
     font-size: 1.6rem;
-    border: 1px solid #e6e6e6;
-    border-radius: 8px;
+    border: none;
     background-color: #fafaf5;
+    box-sizing: border-box; 
 }
 
-.create-form__table-row td {
+.create-form__table td {
     font-size: 1.6rem;
-    padding: 1rem;
 }
 
-.create-form__table-row:hover {
-    background-color: #f9f9f9;
+.create-form__table tr td:first-child {
+    border-left: none;
+}
+.create-form__table tr th:first-child {
+    border-left: none;
+}
+
+.create-form__result-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.create-form__subtitle {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.create-form__price {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.create-form__results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.create-form__result {
+    font-size: 1.6rem;
+}
+
+.create-form__percentage {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

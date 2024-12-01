@@ -1,0 +1,55 @@
+.create-form__section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+.create-form__checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.create-form__text {
+    font-size: 1.6rem;
+}
+
+.create-form__plans {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.create-form__plan-checkbox {
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+}
+
+.create-form__plan-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.4rem;
+}
+
+
+.create-form__select-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.create-form__select {
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 0.9rem 5.5rem;
+    background: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.create-form__select:hover {
+    outline: none;
+}
