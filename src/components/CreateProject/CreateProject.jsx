@@ -101,6 +101,7 @@ function CreateProject() {
         startDate: "",
         plannedEndDate: "",
         amount: 0,
+        rowsData: [],
       },
     ]);
   };
@@ -215,38 +216,36 @@ function CreateProject() {
           </div>
 
           {!isNextClicked ? (
-          <div className="create-form__buttons">
-
-            <button
-              type="button"
-              className="create-form__button"
-              onClick={addPlan}
-            >
-              Добавить план
-            </button>
-
-            <div className="create-form__buttons-right">
+            <div className="create-form__buttons">
               <button
                 type="button"
                 className="create-form__button"
-                onClick={handleNextClick}
+                onClick={addPlan}
               >
-                Далее
+                Добавить план
               </button>
-            </div>
 
-          </div>
+              <div className="create-form__buttons-right">
+                <button
+                  type="button"
+                  className="create-form__button"
+                  onClick={handleNextClick}
+                >
+                  Далее
+                </button>
+              </div>
+            </div>
           ) : (
             <div className="create-form__buttons">
               <div className="create-form__buttons-right">
-              <button
-                type="button"
-                className="create-form__button"
-                onClick={handleSubmit}
-              >
-                Создать
-              </button>
-            </div>
+                <button
+                  type="button"
+                  className="create-form__button"
+                  onClick={handleSubmit}
+                >
+                  Создать
+                </button>
+              </div>
             </div>
           )}
         </form>
