@@ -1,15 +1,10 @@
 import React, { useState, useMemo } from "react";
+import Table from "./Table";
+import ResultSection from "./ResultSection";
+import Input from "../shared/Input/Input"; 
 import "./ProjectPlan.css";
-import Input from "../shared/Input/Input";
 
-const calculateCost = (
-  rowsData,
-  amountField,
-  coefficientField,
-  unitCostField,
-  laboriousnessField,
-  workCostField
-) => {
+const calculateCost = (rowsData, amountField, coefficientField, unitCostField, laboriousnessField, workCostField) => {
   return rowsData.reduce(
     (total, row) => {
       const amount = row[amountField];
@@ -26,14 +21,10 @@ const calculateCost = (
       const laboriousness = amount * row[laboriousnessField];
 
       return {
-        materialCostWithoutCoefficient:
-          total.materialCostWithoutCoefficient + materialCost,
-        materialCostWithCoefficient:
-          total.materialCostWithCoefficient + materialCostWithCoefficient,
-        workCostWithoutCoefficient:
-          total.workCostWithoutCoefficient + workCostWithoutCoefficient,
-        workCostWithCoefficient:
-          total.workCostWithCoefficient + workCostWithCoefficient,
+        materialCostWithoutCoefficient: total.materialCostWithoutCoefficient + materialCost,
+        materialCostWithCoefficient: total.materialCostWithCoefficient + materialCostWithCoefficient,
+        workCostWithoutCoefficient: total.workCostWithoutCoefficient + workCostWithoutCoefficient,
+        workCostWithCoefficient: total.workCostWithCoefficient + workCostWithCoefficient,
         totalLaboriousness: total.totalLaboriousness + laboriousness,
       };
     },
@@ -49,173 +40,89 @@ const calculateCost = (
 
 function ProjectPlan({ planId }) {
   const [rowsData, setRowsData] = useState([
-    { name: "", amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0, },
+    { name: "", amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0 },
   ]);
-  const [percent, setPercent] = useState(100);
+  const [planName, setPlanName] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [amount, setAmount] = useState(0);
 
   const addRow = () => {
     setRowsData([
       ...rowsData,
-      { amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0 },
+      { name: "", amount: 0, unitCost: 0, coefficient: 1, workCost: 0, laboriousness: 0 },
     ]);
   };
 
   const handleInputChange = (index, field, value) => {
     setRowsData((prevRowsData) => {
       const updatedRowsData = [...prevRowsData];
-      
       if (field === "name") {
-        updatedRowsData[index][field] = value; 
+        updatedRowsData[index][field] = value;
       } else {
         updatedRowsData[index][field] = parseFloat(value) || 0;
       }
-      
       return updatedRowsData;
     });
   };
 
-  const handlePercentChange = (value) => {
-    setPercent(parseFloat(value) || 100);
-  };
-
-  const {
-    materialCostWithoutCoefficient,
-    materialCostWithCoefficient,
-    workCostWithoutCoefficient,
-    workCostWithCoefficient,
-    totalLaboriousness,
-  } = useMemo(
-    () =>
-      calculateCost(
-        rowsData,
-        "amount",
-        "coefficient",
-        "unitCost",
-        "laboriousness",
-        "workCost"
-      ),
+  const { materialCostWithoutCoefficient, materialCostWithCoefficient, workCostWithoutCoefficient, workCostWithCoefficient, totalLaboriousness } = useMemo(
+    () => calculateCost(rowsData, "amount", "coefficient", "unitCost", "laboriousness", "workCost"),
     [rowsData]
   );
 
-  const totalCostWithoutCoefficient =
-    materialCostWithoutCoefficient + workCostWithoutCoefficient;
-  const totalCostWithCoefficient =
-    materialCostWithCoefficient + workCostWithCoefficient;
-
-  const adjustCostByPercent = (cost) => {
-    return cost * (percent / 100);
-  };
-
-  const totalCostWithoutCoefficientWithPercent = adjustCostByPercent(
-    totalCostWithoutCoefficient
-  );
-  const totalCostWithCoefficientWithPercent = adjustCostByPercent(
-    totalCostWithCoefficient
-  );
-
-  const renderRowInput = (value, index, field) => (
-    <input
-      type={field === "name" ? "text" : "number"}
-      className="create-form__input"
-      value={value}
-      placeholder={`Введите ${field}`}
-      onChange={(e) => handleInputChange(index, field, e.target.value)}
-    />
-  );
-
-  const renderRows = () => {
-    return rowsData.map((row, index) => (
-      <tr key={index}>
-        <td>
-          <span>{index + 1}</span>
-        </td>
-        <td>{renderRowInput(row.name, index, "name")}</td>
-        <td>{renderRowInput(row.amount, index, "amount")}</td>
-        <td>{renderRowInput(row.unitCost, index, "unitCost")}</td>
-        <td>{renderRowInput(row.coefficient, index, "coefficient")}</td>
-        <td>{renderRowInput(row.workCost, index, "workCost")}</td>
-        <td>{renderRowInput(row.laboriousness, index, "laboriousness")}</td>
-      </tr>
-    ));
-  };
+  const totalCostWithoutCoefficient = materialCostWithoutCoefficient + workCostWithoutCoefficient;
+  const totalCostWithCoefficient = materialCostWithCoefficient + workCostWithCoefficient;
 
   return (
     <div className="create-form__plan">
       <div className="create-form__plan-title-wrapper">
         <h3 className="create-form__plan-title">План {planId}</h3>
-        <button type="button" className="create-form__button" onClick={addRow}>
-          Добавить строку
-        </button>
       </div>
 
-      <div className="create-form__main-inputs">
+      <div className="create-form__inputs">
         <Input
           label="Название плана"
-          id={`planName${planId}`}
-          name={`planName${planId}`}
+          id={`plan-name-${planId}`}
+          value={planName}
+          onChange={(e) => setPlanName(e.target.value)}
         />
         <Input
           label="Дата начала плана"
-          id={`planStartDate${planId}`}
-          name={`planStartDate${planId}`}
+          id={`start-date-${planId}`}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
         />
         <Input
           label="Плановая дата окончания плана"
-          id={`planPlannedEndDate${planId}`}
-          name={`planPlannedEndDate${planId}`}
+          id={`end-date-${planId}`}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+        <Input
+          label="Количество"
+          id={`amount-${planId}`}
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
         />
       </div>
 
-      <table className="create-form__table">
-        <thead>
-          <tr>
-            <th>Материалы (себестоимость)</th>
-            <th>Наименование</th>
-            <th>Количество</th>
-            <th>Цена за единицу</th>
-            <th>Коэффициент</th>
-            <th>Цена за единицу работы</th>
-            <th>Трудоемкость единичная</th>
-          </tr>
-        </thead>
-        <tbody>{renderRows()}</tbody>
-      </table>
+      <Table rowsData={rowsData} handleInputChange={handleInputChange} />
 
       <div className="create-form__result-wrapper">
-        <div className="create-form__price">
-          <h4 className="create-form__subtitle">
-            Итоги по себестоимости (без коэффициента)
-          </h4>
-          <div className="create-form__results">
-            <p className="create-form__result">
-              Итоговая цена по материалам:{" "}
-              <span>{materialCostWithoutCoefficient}</span>
-            </p>
-            <p className="create-form__result">
-              Итоговая цена по работе: <span>{workCostWithoutCoefficient}</span>
-            </p>
-            <p className="create-form__result">
-              Итоговая цена: <span>{totalCostWithoutCoefficient}</span>
-            </p>
-          </div>
-        </div>
-        <div className="create-form__price">
-          <h4 className="create-form__subtitle">
-            Итоги по себестоимости (с коэффициентом)
-          </h4>
-          <div className="create-form__results">
-            <p className="create-form__result">
-              Итоговая цена по материалам:{" "}
-              <span>{materialCostWithCoefficient}</span>
-            </p>
-            <p className="create-form__result">
-              Итоговая цена по работе: <span>{workCostWithCoefficient}</span>
-            </p>
-            <p className="create-form__result">
-              Итоговая цена: <span>{totalCostWithCoefficient}</span>
-            </p>
-          </div>
-        </div>
+        <ResultSection
+          title="Итоги по себестоимости (без коэффициента)"
+          materialCost={materialCostWithoutCoefficient}
+          workCost={workCostWithoutCoefficient}
+          totalCost={totalCostWithoutCoefficient}
+        />
+        <ResultSection
+          title="Итоги по себестоимости (с коэффициентом)"
+          materialCost={materialCostWithCoefficient}
+          workCost={workCostWithCoefficient}
+          totalCost={totalCostWithCoefficient}
+        />
         <div className="create-form__price">
           <p className="create-form__result">
             Суммарная трудоемкость: <span>{totalLaboriousness}</span>
@@ -223,54 +130,10 @@ function ProjectPlan({ planId }) {
         </div>
       </div>
 
-      <div className="create-form__percentage">
-          <h4 className="create-form__subtitle">
-            Пересчитанные суммы по проценту
-          </h4>
-          <Input
-            type="number"
-            label="Введите процент"
-            value={percent}
-            onChange={(e) => handlePercentChange(e.target.value)}
-            id={`percent${planId}`}
-            name={`percent${planId}`}
-            min={1}
-            max={100}
-          />
-        {percent !== 100 && (
-          <div className="create-form__result-wrapper">
-            <div className="create-form__results">
-              <p className="create-form__result">
-                Итоговая цена по материалам (с процентом, без коэффициента):{" "}
-                <span>
-                  {adjustCostByPercent(materialCostWithoutCoefficient)}
-                </span>
-              </p>
-              <p className="create-form__result">
-                Итоговая цена по работе (с процентом, без коэффициента):{" "}
-                <span>{adjustCostByPercent(workCostWithoutCoefficient)}</span>
-              </p>
-              <p className="create-form__result">
-                Итоговая цена (с процентом, без коэффициента):{" "}
-                <span>{totalCostWithoutCoefficientWithPercent}</span>
-              </p>
-            </div>
-            <div className="create-form__results">
-              <p className="create-form__result">
-                Итоговая цена по материалам (с процентом, с коэффициентом):{" "}
-                <span>{adjustCostByPercent(materialCostWithCoefficient)}</span>
-              </p>
-              <p className="create-form__result">
-                Итоговая цена по работе (с процентом, с коэффициентом):{" "}
-                <span>{adjustCostByPercent(workCostWithCoefficient)}</span>
-              </p>
-              <p className="create-form__result">
-                Итоговая цена (с процентом, с коэффициентом):{" "}
-                <span>{totalCostWithCoefficientWithPercent}</span>
-              </p>
-            </div>
-          </div>
-        )}
+      <div className="create-form__plan-actions">
+        <button type="button" className="create-form__button" onClick={addRow}>
+          Добавить строку
+        </button>
       </div>
     </div>
   );
